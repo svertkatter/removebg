@@ -4,11 +4,12 @@
 
 ## 🌐 オンラインデモ
 
-**GitHub Pages版（インストール不要）**: [https://svertkatter.github.io/removebg/](https://svertkatter.github.io/removebg/)
+**背景削除ツール**: [https://svertkatter.github.io/removebg/remove/](https://svertkatter.github.io/removebg/remove/)
 
 - サーバー不要、完全にブラウザ内で動作
 - 画像はサーバーにアップロードされず、プライバシー保護
 - インストールや設定なしで即座に利用可能
+- AI搭載（TensorFlow.js）で高精度な背景削除
 
 ## 機能
 
@@ -23,17 +24,19 @@
 
 ```
 removebg/
-├── docs/               # GitHub Pages用静的サイト
-│   └── index.html      # ブラウザ完結版（サーバー不要）
-├── app.py              # オリジナルのTkinter GUIアプリ
-├── web_app.py          # FlaskベースのWebアプリ
+├── docs/                    # GitHub Pages用静的サイト
+│   ├── index.html           # トップページ（リダイレクト）
+│   └── remove/              # 背景削除ツール
+│       └── index.html       # 背景削除アプリ（完全ブラウザ内処理）
+├── app.py                   # オリジナルのTkinter GUIアプリ
+├── web_app.py               # FlaskベースのWebアプリ
 ├── templates/
-│   └── index.html      # Webアプリのフロントエンド
+│   └── index.html           # Webアプリのフロントエンド
 ├── static/
-│   └── style.css       # スタイルシート
-├── uploads/            # アップロードされた画像の一時保存先（自動生成）
-├── outputs/            # 処理済み画像の保存先（自動生成）
-└── requirements.txt    # Python依存パッケージ
+│   └── style.css            # スタイルシート
+├── uploads/                 # アップロードされた画像の一時保存先（自動生成）
+├── outputs/                 # 処理済み画像の保存先（自動生成）
+└── requirements.txt         # Python依存パッケージ
 ```
 
 ## インストール
@@ -51,12 +54,13 @@ pip install -r requirements.txt
 
 GitHub Pagesで公開されているバージョンをブラウザで開くだけ:
 
-👉 **[https://svertkatter.github.io/removebg/](https://svertkatter.github.io/removebg/)**
+👉 **[背景削除ツール](https://svertkatter.github.io/removebg/remove/)**
 
 - インストール不要
 - サーバー不要
 - 完全にブラウザ内で動作
 - プライバシー保護（画像はアップロードされません）
+- AI搭載で高精度な背景削除
 
 ### 🖥️ ローカルWebアプリケーション
 
@@ -86,10 +90,10 @@ python app.py
 
 ## 技術スタック
 
-### GitHub Pages版（docs/）
+### GitHub Pages版（docs/remove/）
 - **画像処理**: @imgly/background-removal (TensorFlow.js)
 - **フロントエンド**: HTML5, CSS3, JavaScript ES6 Modules
-- **特徴**: 完全クライアントサイド処理、サーバー不要
+- **特徴**: 完全クライアントサイド処理、サーバー不要、unpkg CDN使用
 
 ### ローカルWebアプリ版（web_app.py）
 - **バックエンド**: Flask (Python)
