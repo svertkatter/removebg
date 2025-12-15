@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>背景削除アプリ</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ 画像背景削除アプリ</h1>
+        <p class="subtitle">画像をアップロードすると背景を自動的に削除します</p>
+
+        <div class="upload-section">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" name="file" accept="image/png,image/jpeg,image/jpg,image/gif,image/bmp,image/webp" required>
+                    <label for="fileInput" class="file-label">
+                        <span id="fileName">ファイルを選択</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn-upload" id="uploadBtn">背景を削除</button>
+            </form>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>処理中...</p>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div id="result" class="result" style="display: none;">
+            <h2>処理完了!</h2>
+            <div class="image-container">
+                <img id="resultImage" src="" alt="背景削除済み画像">
+            </div>
+            <div class="button-group">
+                <a id="downloadBtn" href="#" download class="btn-download">ダウンロード</a>
+                <button onclick="location.reload()" class="btn-reset">もう一度</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const uploadForm = document.getElementById('uploadForm');
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+        const result = document.getElementById('result');
+        const resultImage = document.getElementById('resultImage');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        // ファイル選択時にファイル名を表示
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                fileName.textContent = e.target.files[0].name;
+            } else {
+                fileName.textContent = 'ファイルを選択';
+            }
+        });
+
+        // フォーム送信処理
+        uploadForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showError('ファイルを選択してください');
+                return;
+            }
+
+            formData.append('file', file);
+
+            // UI更新
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            result.style.display = 'none';
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // 成功時
+                    resultImage.src = `/preview/${data.output_filename}`;
+                    downloadBtn.href = `/download/${data.output_filename}`;
+                    downloadBtn.download = data.output_filename;
+
+                    loading.style.display = 'none';
+                    result.style.display = 'block';
+                } else {
+                    // エラー時
+                    showError(data.error || '処理に失敗しました');
+                }
+            } catch (err) {
+                showError('サーバーとの通信に失敗しました: ' + err.message);
+            }
+        });
+
+        function showError(message) {
+            loading.style.display = 'none';
+            error.textContent = message;
+            error.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
