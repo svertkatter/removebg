@@ -2,18 +2,29 @@
 
 画像をアップロードすると自動的に背景を削除するWebアプリケーションです。
 
+## 🌐 オンラインデモ
+
+**GitHub Pages版（インストール不要）**: [https://svertkatter.github.io/removebg/](https://svertkatter.github.io/removebg/)
+
+- サーバー不要、完全にブラウザ内で動作
+- 画像はサーバーにアップロードされず、プライバシー保護
+- インストールや設定なしで即座に利用可能
+
 ## 機能
 
 - 画像ファイル（PNG, JPG, JPEG, GIF, BMP, WEBP）のアップロード
-- 自動背景削除処理
+- 自動背景削除処理（AI搭載）
 - 処理済み画像のプレビュー表示
 - 処理済み画像のダウンロード
-- レスポンシブデザイン対応
+- ドラッグ&ドロップ対応
+- レスポンシブデザイン対応（スマホ・タブレット対応）
 
 ## 構成
 
 ```
 removebg/
+├── docs/               # GitHub Pages用静的サイト
+│   └── index.html      # ブラウザ完結版（サーバー不要）
 ├── app.py              # オリジナルのTkinter GUIアプリ
 ├── web_app.py          # FlaskベースのWebアプリ
 ├── templates/
@@ -36,33 +47,58 @@ pip install -r requirements.txt
 
 ## 使い方
 
-### Webアプリケーション（推奨）
+### 📱 オンライン版（最も簡単・推奨）
 
-1. Webアプリを起動:
+GitHub Pagesで公開されているバージョンをブラウザで開くだけ:
+
+👉 **[https://svertkatter.github.io/removebg/](https://svertkatter.github.io/removebg/)**
+
+- インストール不要
+- サーバー不要
+- 完全にブラウザ内で動作
+- プライバシー保護（画像はアップロードされません）
+
+### 🖥️ ローカルWebアプリケーション
+
+サーバーをローカルで動かす場合:
+
+1. 依存パッケージをインストール:
+```bash
+pip install -r requirements.txt
+```
+
+2. Webアプリを起動:
 ```bash
 python web_app.py
 ```
 
-2. ブラウザで以下のURLにアクセス:
+3. ブラウザで以下のURLにアクセス:
 ```
 http://localhost:5000
 ```
 
-3. 画像ファイルを選択して「背景を削除」ボタンをクリック
-
-4. 処理が完了したら、プレビューを確認してダウンロード
-
-### デスクトップGUIアプリ（従来版）
+### 🪟 デスクトップGUIアプリ（従来版）
 
 ```bash
+pip install -r requirements.txt
 python app.py
 ```
 
 ## 技術スタック
 
+### GitHub Pages版（docs/）
+- **画像処理**: @imgly/background-removal (TensorFlow.js)
+- **フロントエンド**: HTML5, CSS3, JavaScript ES6 Modules
+- **特徴**: 完全クライアントサイド処理、サーバー不要
+
+### ローカルWebアプリ版（web_app.py）
 - **バックエンド**: Flask (Python)
 - **画像処理**: rembg, Pillow
 - **フロントエンド**: HTML5, CSS3, JavaScript (Vanilla)
+
+### デスクトップGUI版（app.py）
+- **GUI**: tkinter
+- **画像処理**: rembg, Pillow
 
 ## 注意事項
 
